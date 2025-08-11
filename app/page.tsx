@@ -475,7 +475,7 @@ function TeamSection() {
       name: "Pratik Kumar Sinha",
       role: "Database Manager",
       bio: "Querying through life and stuff",
-      image: "/mayank.png",
+      image: "/pratik.jpg",
     },
   ]
 
