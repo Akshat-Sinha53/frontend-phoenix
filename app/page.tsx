@@ -456,7 +456,7 @@ function TeamSection() {
     {
       name: "Siddharth Paul",
       role: "Team Leader, R&D, Model Trainer",
-      bio: "Aspiring AI research engineer and someone passionate about AI and deep learning and solving real world problems",
+      bio: "Aspiring AI research engineer and someone passionate about AI and deep learning ",
       image: "/siddharth.png",
     },
     {
@@ -469,6 +469,12 @@ function TeamSection() {
       name: "Mayank Kumar",
       role: "UI/UX designer",
       bio: "Interested in making scalable and stunning designs",
+      image: "/mayank.png",
+    },
+    {
+      name: "Pratik Kumar Sinha",
+      role: "Database Manager",
+      bio: "Querying through life and stuff",
       image: "/mayank.png",
     },
   ]
@@ -485,11 +491,11 @@ function TeamSection() {
         >
           <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6">Meet Our Team</h2>
           <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-            A trio of passionate upcomming Engineers who are looking for methods to change the world by making innovatibve tech scalable
+            A Squad of passionate upcomming Engineers who are looking for methods to change the world by making innovatibve tech scalable
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-4 gap-8">
           {team.map((member, index) => (
             <motion.div
               key={index}
