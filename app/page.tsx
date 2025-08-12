@@ -67,9 +67,11 @@ function Navigation() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
+          <a href="#hero">
           <div className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
             Phoenix
           </div>
+          </a>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex space-x-8">
@@ -120,7 +122,7 @@ function Navigation() {
 // Hero Section
 function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Animated Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-pink-600/20 animate-pulse" />
@@ -165,20 +167,15 @@ function HeroSection() {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="flex flex-col sm:flex-row gap-6 justify-center items-center"
         >
+        <a href="#demo">
           <Button
             size="lg"
             className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg font-semibold rounded-full transition-all duration-300 transform hover:scale-105 shadow-2xl"
           >
             Start Exploring
           </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            className="border-2 border-white/30 text-white hover:bg-white/10 px-8 py-4 text-lg font-semibold rounded-full transition-all duration-300 backdrop-blur-sm bg-transparent"
-          >
-            <Upload className="mr-2" size={20} />
-            Upload Audio
-          </Button>
+          </a>
+          
         </motion.div>
       </div>
 
