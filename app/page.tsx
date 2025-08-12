@@ -77,7 +77,7 @@ function Navigation() {
               How It Works
             </Link>
             <Link href="#demo" className="text-gray-300 hover:text-white transition-colors">
-              Demo
+              See It in Action
             </Link>
             <Link href="#features" className="text-gray-300 hover:text-white transition-colors">
               Features
@@ -169,7 +169,7 @@ function HeroSection() {
             size="lg"
             className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg font-semibold rounded-full transition-all duration-300 transform hover:scale-105 shadow-2xl"
           >
-            Try the Demo
+            Start Exploring
           </Button>
           <Button
             size="lg"
