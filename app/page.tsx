@@ -55,6 +55,8 @@ function AnimatedWaveform() {
   )
 }
 
+
+
 // Navigation Component
 function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
@@ -489,7 +491,7 @@ function TeamSection() {
         >
           <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6">Meet Our Team</h2>
           <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-            A Squad of passionate upcoming Engineers who are looking for methods to change the world by making innovative tech scalable
+            A Squad of passionate upcoming Engineers who are looking for methods to change the world by making innovative tech scalable and we are trying to win House Of Turing Hackathon.
           </p>
         </motion.div>
 
