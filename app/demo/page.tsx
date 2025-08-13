@@ -32,22 +32,22 @@ import Link from "next/link"
 // Mock data for demonstration
 const mockTranscript = [
   {
-    speaker: "John Smith",
-    text: "Hello everyone, welcome to today's meeting. I'm excited to discuss our quarterly progress and the new initiatives we've been working on.",
+    speaker: "Siddharth Paul",
+    text: "Hey Akshat, When is the hackathon I build the Front end while you deal with the backend I even found the models to train YOO !!",
     timestamp: "00:01",
     sentiment: "positive",
     language: "en",
   },
   {
-    speaker: "Maria Garcia",
-    text: "Thank you John. I'm also excited to share our team's achievements. We've made significant progress on the project milestones.",
+    speaker: "Akshat Sinha",
+    text: "Thank you Siddharth. I'm also excited to win this hackathon by any means. We've worked really hard on this to fail.",
     timestamp: "00:15",
     sentiment: "positive",
     language: "en",
   },
   {
-    speaker: "John Smith",
-    text: "That's fantastic to hear Maria. Let's dive into the details and see what challenges we might face moving forward.",
+    speaker: "Mayank Kumar",
+    text: "That's fantastic to hear team. Let's dive into the details and I even have the UI/UX designs ready.",
     timestamp: "00:28",
     sentiment: "neutral",
     language: "en",
@@ -56,8 +56,8 @@ const mockTranscript = [
 
 const mockSummary = {
   keyPoints: [
-    "Quarterly progress meeting initiated by John Smith",
-    "Team achievements and project milestones discussed by Maria Garcia",
+    "Quarterly progress meeting initiated by Siddharth",
+    "Exited for making the project",
     "Focus on upcoming challenges and strategic planning",
   ],
   actionItems: [
@@ -72,7 +72,7 @@ const mockSummary = {
 const languages = [
   { code: "en", name: "English" },
   { code: "hi", name: "Hindi" },
-  { code: "te", name: "Telugu" },
+  { code: "te", name: "Telegu" },
   { code: "ja", name: "Japanese" },
   { code: "ko", name: "Korean" },
   { code: "es", name: "Spanish" },
@@ -373,7 +373,7 @@ function LiveDashboard({ onBack }: { onBack: () => void }) {
               <SelectTrigger className="w-40 bg-white/10 border-white/20">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="bg-gray-900 border-white/20">
+              <SelectContent className="bg-blue-500 border-white/20">
                 {languages.map((lang) => (
                   <SelectItem key={lang.code} value={lang.code}>
                     {lang.name}
@@ -433,16 +433,16 @@ function LiveDashboard({ onBack }: { onBack: () => void }) {
             {/* Speaker Stats */}
             <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-6 mt-6">
               <h3 className="text-lg font-semibold mb-4 flex items-center text-white">
-                <Users className="mr-2" size={20} />
+                <Users className="mr-2 text-white" size={20} />
                 Speaker Statistics
               </h3>
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <span className="text-blue-400">John Smith</span>
+                  <span className="text-blue-400">Siddharth Paul</span>
                   <span className="text-sm text-gray-400">65% talk time</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-purple-400">Maria Garcia</span>
+                  <span className="text-purple-400">Akshat Sinha</span>
                   <span className="text-sm text-gray-400">35% talk time</span>
                 </div>
               </div>
@@ -871,11 +871,11 @@ function AnalysisDashboard({
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-4 gap-6">
+        <div className="grid lg:grid-cols-4 gap-6 ">
           {/* Left Panel - Audio Player */}
           <div className="lg:col-span-1">
-            <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-6 h-fit">
-              <h3 className="text-xl font-semibold mb-6 text-center">Audio Player</h3>
+            <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-6 h-fit ">
+              <h3 className="text-xl font-semibold mb-6 text-center text-white">Audio Player</h3>
 
               <div className="flex flex-col items-center space-y-6">
                 <div className="w-32 h-32 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
@@ -920,8 +920,8 @@ function AnalysisDashboard({
 
             {/* Speaker Stats */}
             <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-6 mt-6">
-              <h3 className="text-lg font-semibold mb-4 flex items-center">
-                <Users className="mr-2" size={20} />
+              <h3 className="text-lg font-semibold mb-4 flex items-center text-white">
+                <Users className="mr-2 text-white" size={20}/>
                 Speaker Statistics
               </h3>
               <div className="space-y-3">
@@ -940,7 +940,7 @@ function AnalysisDashboard({
           {/* Center Panel - Transcript */}
           <div className="lg:col-span-1">
             <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-6 h-[600px] flex flex-col">
-              <h3 className="text-xl font-semibold mb-4">Transcript</h3>
+              <h3 className="text-xl font-semibold mb-4 text-white">Transcript</h3>
 
               <div className="flex-1 overflow-y-auto space-y-4">
                 {mockTranscript.map((entry, index) => (
@@ -985,8 +985,8 @@ function AnalysisDashboard({
 
             {/* Summarization */}
             <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-6">
-              <h3 className="text-lg font-semibold mb-4 flex items-center">
-                <FileText className="mr-2" size={20} />
+              <h3 className="text-lg font-semibold mb-4 flex items-center text-white">
+                <FileText className="mr-2 text-cyan-50" size={20} />
                 Audio Summary
               </h3>
               <div className="space-y-4">
@@ -1021,19 +1021,19 @@ function AnalysisDashboard({
 
             {/* Sentiment Analysis */}
             <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-6">
-              <h3 className="text-lg font-semibold mb-4 flex items-center">
-                <Heart className="mr-2" size={20} />
+              <h3 className="text-lg font-semibold mb-4 flex items-center text-white">
+                <Heart className="mr-2 text-white" size={20} />
                 Sentiment Analysis
               </h3>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <Smile className="text-green-400" size={16} />
-                    <span className="text-yellow-400">Positive</span>
+                    <Smile className="text-blue-400" size={16} />
+                    <span className="text-blue-400">Positive</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <div className="w-20 h-2 bg-gray-700 rounded-full">
-                      <div className="h-full w-4/5 bg-green-400 rounded-full"></div>
+                      <div className="h-full w-4/5 bg-blue-400 rounded-full"></div>
                     </div>
                     <span className="text-sm text-gray-400">75%</span>
                   </div>
@@ -1041,12 +1041,12 @@ function AnalysisDashboard({
 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <Meh className="text-yellow-400" size={16} />
-                    <span className="text-yellow-400">Neutral</span>
+                    <Meh className="text-green-400" size={16} />
+                    <span className="text-green-400">Neutral</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <div className="w-20 h-2 bg-gray-700 rounded-full">
-                      <div className="h-full w-1/5 bg-yellow-400 rounded-full"></div>
+                      <div className="h-full w-1/5 bg-green-400 rounded-full"></div>
                     </div>
                     <span className="text-sm text-gray-400">20%</span>
                   </div>
@@ -1054,12 +1054,12 @@ function AnalysisDashboard({
 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <Frown className="text-red-400" size={16} />
-                    <span className="text-yellow-400">Negative</span>
+                    <Frown className="text-red-500" size={16} />
+                    <span className="text-red-500">Negative</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <div className="w-20 h-2 bg-gray-700 rounded-full">
-                      <div className="h-full w-1/20 bg-red-400 rounded-full"></div>
+                      <div className="h-full w-1/20 bg-red-500 rounded-full"></div>
                     </div>
                     <span className="text-sm text-gray-400">5%</span>
                   </div>
