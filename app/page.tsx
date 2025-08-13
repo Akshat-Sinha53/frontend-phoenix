@@ -103,7 +103,7 @@ function Navigation() {
                 How It Works
               </Link>
               <Link href="#demo" className="text-gray-300 hover:text-white transition-colors">
-                See it in action
+                See it in Action
               </Link>
               <Link href="#features" className="text-gray-300 hover:text-white transition-colors">
                 Features
