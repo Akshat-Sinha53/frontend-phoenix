@@ -32,22 +32,22 @@ import Link from "next/link"
 // Mock data for demonstration
 const mockTranscript = [
   {
-    speaker: "John Smith",
-    text: "Hello everyone, welcome to today's meeting. I'm excited to discuss our quarterly progress and the new initiatives we've been working on.",
+    speaker: "Siddharth Paul",
+    text: "Hey Akshat, When is the hackathon I build the Front end while you deal with the backend I even found the models to train YOO !!",
     timestamp: "00:01",
     sentiment: "positive",
     language: "en",
   },
   {
-    speaker: "Maria Garcia",
-    text: "Thank you John. I'm also excited to share our team's achievements. We've made significant progress on the project milestones.",
+    speaker: "Akshat Sinha",
+    text: "Thank you Siddharth. I'm also excited to win this hackathon by any means. We've worked really hard on this to fail.",
     timestamp: "00:15",
     sentiment: "positive",
     language: "en",
   },
   {
-    speaker: "John Smith",
-    text: "That's fantastic to hear Maria. Let's dive into the details and see what challenges we might face moving forward.",
+    speaker: "Mayank Kumar",
+    text: "That's fantastic to hear team. Let's dive into the details and I even have the UI/UX designs ready.",
     timestamp: "00:28",
     sentiment: "neutral",
     language: "en",
@@ -56,8 +56,8 @@ const mockTranscript = [
 
 const mockSummary = {
   keyPoints: [
-    "Quarterly progress meeting initiated by John Smith",
-    "Team achievements and project milestones discussed by Maria Garcia",
+    "Quarterly progress meeting initiated by Siddharth",
+    "Exited for making the project",
     "Focus on upcoming challenges and strategic planning",
   ],
   actionItems: [
@@ -72,7 +72,7 @@ const mockSummary = {
 const languages = [
   { code: "en", name: "English" },
   { code: "hi", name: "Hindi" },
-  { code: "te", name: "Telugu" },
+  { code: "te", name: "Telegu" },
   { code: "ja", name: "Japanese" },
   { code: "ko", name: "Korean" },
   { code: "es", name: "Spanish" },
@@ -373,7 +373,7 @@ function LiveDashboard({ onBack }: { onBack: () => void }) {
               <SelectTrigger className="w-40 bg-white/10 border-white/20">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="bg-gray-900 border-white/20">
+              <SelectContent className="bg-blue-500 border-white/20">
                 {languages.map((lang) => (
                   <SelectItem key={lang.code} value={lang.code}>
                     {lang.name}
@@ -438,11 +438,11 @@ function LiveDashboard({ onBack }: { onBack: () => void }) {
               </h3>
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <span className="text-blue-400">John Smith</span>
+                  <span className="text-blue-400">Siddharth Paul</span>
                   <span className="text-sm text-gray-400">65% talk time</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-purple-400">Maria Garcia</span>
+                  <span className="text-purple-400">Akshat Sinha</span>
                   <span className="text-sm text-gray-400">35% talk time</span>
                 </div>
               </div>

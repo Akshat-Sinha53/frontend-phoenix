@@ -378,7 +378,7 @@ function FeaturesSection() {
     {
       icon: Globe,
       title: "Language-Agnostic",
-      description: "Supports 100+ languages with automatic detection",
+      description: "Supports 6 languages with automatic detection",
     },
     {
       icon: Shield,
@@ -393,7 +393,7 @@ function FeaturesSection() {
     {
       icon: Users,
       title: "Speaker Identification",
-      description: "Distinguish between multiple speakers automatically",
+      description: "Distinguish between speakers automatically from the database",
     },
     {
       icon: MessageSquare,
@@ -403,7 +403,7 @@ function FeaturesSection() {
     {
       icon: Cpu,
       title: "AI-Powered",
-      description: "State-of-the-art neural networks for maximum accuracy",
+      description: "State-of-the-art models (vosk) for maximum accuracy and hassle free building ",
     },
   ]
 
@@ -551,8 +551,8 @@ function Footer() {
               <Github size={24} />
             </Link>
             <Link
-              href="https://linkedin.com"
-              className="text-gray-400 hover:text-white transition-colors"
+              href="https://www.linkedin.com/in/siddharth-paul-00ab59278/"
+              className="text-gray-400 hover:text-blue-400 transition-colors"
               target="_blank"
               rel="noopener noreferrer"
             >
