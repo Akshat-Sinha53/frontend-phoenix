@@ -67,9 +67,11 @@ function Navigation() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
+          <a href="#hero">
           <div className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
             Phoenix
           </div>
+          </a>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex space-x-8">
@@ -77,7 +79,7 @@ function Navigation() {
               How It Works
             </Link>
             <Link href="#demo" className="text-gray-300 hover:text-white transition-colors">
-              Demo
+              See it in action
             </Link>
             <Link href="#features" className="text-gray-300 hover:text-white transition-colors">
               Features
@@ -101,7 +103,7 @@ function Navigation() {
                 How It Works
               </Link>
               <Link href="#demo" className="text-gray-300 hover:text-white transition-colors">
-                Demo
+                See it in action
               </Link>
               <Link href="#features" className="text-gray-300 hover:text-white transition-colors">
                 Features
