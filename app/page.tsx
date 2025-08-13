@@ -67,11 +67,9 @@ function Navigation() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
-          <a href="#hero">
           <div className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
             Phoenix
           </div>
-          </a>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex space-x-8">
@@ -79,7 +77,7 @@ function Navigation() {
               How It Works
             </Link>
             <Link href="#demo" className="text-gray-300 hover:text-white transition-colors">
-              See It in Action
+              Demo
             </Link>
             <Link href="#features" className="text-gray-300 hover:text-white transition-colors">
               Features
@@ -88,7 +86,7 @@ function Navigation() {
               Team
             </Link>
           </div>
-
+          
           {/* Mobile menu button */}
           <button className="md:hidden text-white" onClick={() => setIsOpen(!isOpen)}>
             {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -118,7 +116,6 @@ function Navigation() {
     </motion.nav>
   )
 }
-
 // Hero Section
 function HeroSection() {
   return (
@@ -237,7 +234,7 @@ function HowItWorksSection() {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {steps.map((step, index) => (
             <motion.div
               key={index}
@@ -245,14 +242,16 @@ function HowItWorksSection() {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: index * 0.2 }}
               whileHover={{ y: -10 }}
-              className="group"
+              className="group h-full"
             >
-              <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-8 text-center hover:bg-white/10 transition-all duration-300">
+              <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-8 text-center hover:bg-white/10 transition-all duration-300 h-full flex flex-col">
                 <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                   <step.icon size={32} className="text-white" />
                 </div>
-                <h3 className="text-2xl font-semibold text-white mb-4">{step.title}</h3>
-                <p className="text-gray-400 leading-relaxed">{step.description}</p>
+                <div className="flex-1">
+                  <h3 className="text-2xl font-semibold text-white mb-4">{step.title}</h3>
+                  <p className="text-gray-400 leading-relaxed">{step.description}</p>
+                </div>
               </Card>
             </motion.div>
           ))}
@@ -262,9 +261,10 @@ function HowItWorksSection() {
   )
 }
 
+
 // Demo Preview Section
 function DemoSection() {
-  const [isPlaying, setIsPlaying] = useState(false)
+  const [isPlaying] = useState(false)
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true })
 
@@ -294,7 +294,7 @@ function DemoSection() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => setIsPlaying(!isPlaying)}
+                onClick={() => window.open("/demo", "_blank")}
                 className="w-32 h-32 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mb-6 shadow-2xl"
               >
                 {isPlaying ? (
@@ -308,7 +308,7 @@ function DemoSection() {
                   <Play size={48} className="text-white ml-2" />
                 )}
               </motion.button>
-              <p className="text-gray-400 text-center">{isPlaying ? "Recording..." : "Click to start demo"}</p>
+              <p className="text-gray-400 text-center">Click to open demo</p>
             </div>
 
             {/* Left Panel - Transcript */}
@@ -353,7 +353,7 @@ function DemoSection() {
                 {isPlaying && (
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-green-400">
                     <span className="font-medium">Speaker 1 (EN):</span>
-                    <span className="text-gray-300 ml-2"> That is great to hear...</span>
+                    <span className="text-gray-300 ml-2">That is great to hear...</span>
                   </motion.div>
                 )}
               </div>
@@ -443,7 +443,6 @@ function FeaturesSection() {
     </section>
   )
 }
-
 // Team Section
 function TeamSection() {
   const ref = useRef(null)
@@ -488,11 +487,12 @@ function TeamSection() {
         >
           <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6">Meet Our Team</h2>
           <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-            A Squad of passionate upcomming Engineers who are looking for methods to change the world by making innovatibve tech scalable
+            A Squad of passionate upcoming Engineers who are looking for methods to change the world by making innovative tech scalable
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-4 gap-8">
+        {/* Force 4 cards per row on lg+ screens */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {team.map((member, index) => (
             <motion.div
               key={index}
@@ -500,9 +500,9 @@ function TeamSection() {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: index * 0.2 }}
               whileHover={{ y: -10 }}
-              className="group"
+              className="group h-full"
             >
-              <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-6 text-center hover:bg-white/10 transition-all duration-300">
+              <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-6 text-center hover:bg-white/10 transition-all duration-300 h-full flex flex-col">
                 <div className="relative mb-6">
                   <Image
                     src={member.image || "/placeholder.svg"}
@@ -513,9 +513,11 @@ function TeamSection() {
                   />
                   <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 group-hover:opacity-100 opacity-0 transition-opacity duration-300" />
                 </div>
-                <h3 className="text-xl font-semibold text-white mb-2">{member.name}</h3>
-                <p className="text-blue-400 font-medium mb-3">{member.role}</p>
-                <p className="text-gray-400 text-sm leading-relaxed">{member.bio}</p>
+                <div className="flex-1">
+                  <h3 className="text-xl font-semibold text-white mb-2">{member.name}</h3>
+                  <p className="text-blue-400 font-medium mb-3">{member.role}</p>
+                  <p className="text-gray-400 text-sm leading-relaxed">{member.bio}</p>
+                </div>
               </Card>
             </motion.div>
           ))}
