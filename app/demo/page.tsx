@@ -22,9 +22,12 @@ import {
   Smile,
   ArrowLeft,
   FileAudio,
+  FileText,
+  Pause,
+  SkipBack,
+  SkipForward,
 } from "lucide-react"
 import Link from "next/link"
-
 // Mock data for demonstration
 const mockTranscript = [
   {
