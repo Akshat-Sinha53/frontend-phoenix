@@ -28,49 +28,54 @@ import {
   SkipForward,
 } from "lucide-react"
 import Link from "next/link"
+
 // Mock data for demonstration
 const mockTranscript = [
   {
     speaker: "John Smith",
-    text: "Hello everyone, welcome to today's meeting.",
+    text: "Hello everyone, welcome to today's meeting. I'm excited to discuss our quarterly progress and the new initiatives we've been working on.",
     timestamp: "00:01",
-    sentiment: "neutral",
-    language: "en",
-  },
-  {
-    speaker: "Speaker 2",
-    text: "Thank you John. I'm excited to discuss our progress.",
-    timestamp: "00:05",
     sentiment: "positive",
     language: "en",
   },
   {
     speaker: "Maria Garcia",
-    text: "Hola, ¿podemos empezar con el reporte?",
-    timestamp: "00:10",
-    sentiment: "neutral",
-    language: "es",
-  },
-  {
-    speaker: "Speaker 2",
-    text: "Of course! Let me share the latest updates.",
+    text: "Thank you John. I'm also excited to share our team's achievements. We've made significant progress on the project milestones.",
     timestamp: "00:15",
     sentiment: "positive",
     language: "en",
   },
+  {
+    speaker: "John Smith",
+    text: "That's fantastic to hear Maria. Let's dive into the details and see what challenges we might face moving forward.",
+    timestamp: "00:28",
+    sentiment: "neutral",
+    language: "en",
+  },
 ]
+
+const mockSummary = {
+  keyPoints: [
+    "Quarterly progress meeting initiated by John Smith",
+    "Team achievements and project milestones discussed by Maria Garcia",
+    "Focus on upcoming challenges and strategic planning",
+  ],
+  actionItems: [
+    "Review detailed project milestones",
+    "Identify potential challenges for next quarter",
+    "Prepare strategic planning session",
+  ],
+  duration: "2:45",
+  wordCount: 156,
+}
 
 const languages = [
   { code: "en", name: "English" },
-  { code: "es", name: "Spanish" },
-  { code: "fr", name: "French" },
-  { code: "de", name: "German" },
-  { code: "it", name: "Italian" },
-  { code: "pt", name: "Portuguese" },
-  { code: "ru", name: "Russian" },
+  { code: "hi", name: "Hindi" },
+  { code: "te", name: "Telugu" },
   { code: "ja", name: "Japanese" },
   { code: "ko", name: "Korean" },
-  { code: "zh", name: "Chinese" },
+  { code: "es", name: "Spanish" },
 ]
 
 // Waveform Animation Component
@@ -138,6 +143,49 @@ function LiveWaveform({ isActive }: { isActive: boolean }) {
   }, [isActive])
 
   return <canvas ref={canvasRef} width={200} height={200} className="rounded-full" />
+}
+
+// Audio Progress Bar Component
+function AudioProgressBar({
+  currentTime,
+  duration,
+  onSeek,
+}: {
+  currentTime: number
+  duration: number
+  onSeek: (time: number) => void
+}) {
+  const progressRef = useRef<HTMLDivElement>(null)
+
+  const handleClick = (e: React.MouseEvent) => {
+    if (progressRef.current) {
+      const rect = progressRef.current.getBoundingClientRect()
+      const clickX = e.clientX - rect.left
+      const percentage = clickX / rect.width
+      onSeek(percentage * duration)
+    }
+  }
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60)
+    const secs = Math.floor(seconds % 60)
+    return `${mins}:${secs.toString().padStart(2, "0")}`
+  }
+
+  return (
+    <div className="space-y-2">
+      <div ref={progressRef} className="w-full h-2 bg-gray-700 rounded-full cursor-pointer" onClick={handleClick}>
+        <div
+          className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full transition-all duration-300"
+          style={{ width: `${(currentTime / duration) * 100}%` }}
+        />
+      </div>
+      <div className="flex justify-between text-sm text-gray-400">
+        <span>{formatTime(currentTime)}</span>
+        <span>{formatTime(duration)}</span>
+      </div>
+    </div>
+  )
 }
 
 // Sentiment Icon Component
@@ -264,9 +312,9 @@ function DemoOptions({ onSelectOption }: { onSelectOption: (option: string) => v
 // Live Dashboard Component
 function LiveDashboard({ onBack }: { onBack: () => void }) {
   const [isRecording, setIsRecording] = useState(false)
-  const [targetLanguage, setTargetLanguage] = useState("es")
+  const [targetLanguage, setTargetLanguage] = useState("hi")
   const [currentTranscript, setCurrentTranscript] = useState(mockTranscript)
-  const [showTranslation, setShowTranslation] = useState(true)
+  const [showTranslation, setShowTranslation] = useState(false)
 
   const toggleRecording = () => {
     setIsRecording(!isRecording)
@@ -274,41 +322,44 @@ function LiveDashboard({ onBack }: { onBack: () => void }) {
     // Simulate adding new transcript entries when recording
     if (!isRecording) {
       const interval = setInterval(() => {
+        const speakers = ["John Smith", "Maria Garcia"]
         const newEntry = {
-          speaker: Math.random() > 0.5 ? "John Smith" : "Speaker " + Math.floor(Math.random() * 3 + 2),
-          text: "This is a simulated live transcription...",
+          speaker: speakers[Math.floor(Math.random() * speakers.length)],
+          text: "This is a simulated live transcription with real-time processing...",
           timestamp: new Date().toLocaleTimeString().slice(0, 5),
           sentiment: ["positive", "neutral", "negative"][Math.floor(Math.random() * 3)],
           language: "en",
         }
 
-        setCurrentTranscript((prev) => [...prev, newEntry].slice(-10)) // Keep last 10 entries
-      }, 3000)
+        setCurrentTranscript((prev) => [...prev, newEntry].slice(-8)) // Keep last 8 entries
+      }, 4000)
 
       // Clear interval when component unmounts or recording stops
-      setTimeout(() => clearInterval(interval), 15000)
+      setTimeout(() => clearInterval(interval), 20000)
     }
   }
 
   const translateText = (text: string, fromLang: string) => {
     // Mock translation - in real app this would call translation API
-    const translations: { [key: string]: string } = {
-      "Hello everyone, welcome to today's meeting.": "Hola a todos, bienvenidos a la reunión de hoy.",
-      "Thank you John. I'm excited to discuss our progress.":
-        "Gracias John. Estoy emocionado de discutir nuestro progreso.",
-      "Of course! Let me share the latest updates.": "¡Por supuesto! Permíteme compartir las últimas actualizaciones.",
-      "This is a simulated live transcription...": "Esta es una transcripción en vivo simulada...",
+    const translations: { [key: string]: { [key: string]: string } } = {
+      "Hello everyone, welcome to today's meeting. I'm excited to discuss our quarterly progress and the new initiatives we've been working on.":
+        {
+          hi: "नमस्ते सभी, आज की बैठक में आपका स्वागत है। मैं हमारी तिमाही प्रगति और नई पहलों पर चर्चा करने के लिए उत्साहित हूं।",
+          es: "Hola a todos, bienvenidos a la reunión de hoy. Estoy emocionado de discutir nuestro progreso trimestral y las nuevas iniciativas.",
+          ja: "皆さん、こんにちは。今日の会議へようこそ。四半期の進捗と新しい取り組みについて話し合うことを楽しみにしています。",
+          ko: "안녕하세요 여러분, 오늘 회의에 오신 것을 환영합니다. 분기별 진행 상황과 새로운 이니셔티브에 대해 논의하게 되어 기쁩니다.",
+          te: "అందరికీ నమస్కారం, నేటి సమావేశానికి స్వాగతం. మా త్రైమాసిక పురోగతి మరియు కొత్త కార్యక్రమాలను చర్చించడానికి నేను ఉత్సాహంగా ఉన్నాను.",
+        },
     }
 
-    if (fromLang === "es" && targetLanguage === "en") {
-      return "Hello, can we start with the report?" // Mock Spanish to English
-    }
-
-    return translations[text] || `[Translated to ${languages.find((l) => l.code === targetLanguage)?.name}]: ${text}`
+    return (
+      translations[text]?.[targetLanguage] ||
+      `[Translated to ${languages.find((l) => l.code === targetLanguage)?.name}]: ${text}`
+    )
   }
 
   return (
-    <div className="min-h-screen bg-black text-yellow p-4">
+    <div className="min-h-screen bg-black text-white p-4">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
@@ -331,22 +382,24 @@ function LiveDashboard({ onBack }: { onBack: () => void }) {
               </SelectContent>
             </Select>
             <Button
-              variant="outline"
-              size="sm"
               onClick={() => setShowTranslation(!showTranslation)}
-              className="border-white/20 text-white hover:bg-white/10"
+              className={`${
+                showTranslation
+                  ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                  : "bg-white/10 hover:bg-white/20 border border-white/20"
+              }`}
             >
               <Languages className="mr-2" size={16} />
-              {showTranslation ? "Hide" : "Show"} Translation
+              Translate
             </Button>
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid lg:grid-cols-4 gap-6">
           {/* Left Panel - Live Waveform */}
           <div className="lg:col-span-1">
             <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-6 h-fit">
-              <h3 className="text-xl font-semibold mb-6 text-center">Live Audio Input</h3>
+              <h3 className="text-xl font-semibold mb-6 text-center text-white">Live Audio Input</h3>
 
               <div className="flex flex-col items-center space-y-6">
                 <LiveWaveform isActive={isRecording} />
@@ -379,22 +432,18 @@ function LiveDashboard({ onBack }: { onBack: () => void }) {
 
             {/* Speaker Stats */}
             <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-6 mt-6">
-              <h3 className="text-lg font-semibold mb-4 flex items-center">
+              <h3 className="text-lg font-semibold mb-4 flex items-center text-white">
                 <Users className="mr-2" size={20} />
                 Speaker Statistics
               </h3>
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
                   <span className="text-blue-400">John Smith</span>
-                  <span className="text-sm text-gray-400">45% talk time</span>
+                  <span className="text-sm text-gray-400">65% talk time</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-purple-400">Maria Garcia</span>
-                  <span className="text-sm text-gray-400">25% talk time</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-green-400">Speaker 2</span>
-                  <span className="text-sm text-gray-400">30% talk time</span>
+                  <span className="text-sm text-gray-400">35% talk time</span>
                 </div>
               </div>
             </Card>
@@ -403,7 +452,7 @@ function LiveDashboard({ onBack }: { onBack: () => void }) {
           {/* Center Panel - Live Transcript */}
           <div className="lg:col-span-1">
             <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-6 h-[600px] flex flex-col">
-              <h3 className="text-xl font-semibold mb-4">Live Transcript</h3>
+              <h3 className="text-xl font-semibold mb-4 text-white">Live Transcript</h3>
 
               <div className="flex-1 overflow-y-auto space-y-4">
                 <AnimatePresence>
@@ -432,16 +481,16 @@ function LiveDashboard({ onBack }: { onBack: () => void }) {
           </div>
 
           {/* Right Panel - Translation & Analysis */}
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-2 space-y-6">
             {showTranslation && (
-              <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-6 h-[400px] flex flex-col mb-6">
-                <h3 className="text-xl font-semibold mb-4 flex items-center">
+              <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-6 h-[280px] flex flex-col">
+                <h3 className="text-xl font-semibold mb-4 flex items-center text-white">
                   <Languages className="mr-2" size={20} />
-                  Live Translation
+                  Live Translation ({languages.find((l) => l.code === targetLanguage)?.name})
                 </h3>
 
                 <div className="flex-1 overflow-y-auto space-y-4">
-                  {currentTranscript.map((entry, index) => (
+                  {currentTranscript.slice(-3).map((entry, index) => (
                     <div key={index} className="p-3 bg-white/5 rounded-lg border-l-4 border-purple-500">
                       <div className="flex justify-between items-start mb-2">
                         <span className="font-medium text-purple-400">{entry.speaker}</span>
@@ -454,9 +503,41 @@ function LiveDashboard({ onBack }: { onBack: () => void }) {
               </Card>
             )}
 
-            {/* Sentiment Analysis */}
+            {/* Summarization */}
             <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-6">
-              <h3 className="text-lg font-semibold mb-4 flex items-center">
+              <h3 className="text-lg font-semibold mb-4 flex items-center text-white">
+                <FileText className="mr-2" size={20} />
+                Live Summary
+              </h3>
+              <div className="space-y-4">
+                <div>
+                  <h4 className="text-sm font-medium text-blue-400 mb-2">Key Points</h4>
+                  <ul className="text-sm text-gray-300 space-y-1">
+                    {mockSummary.keyPoints.slice(0, 2).map((point, index) => (
+                      <li key={index} className="flex items-start">
+                        <span className="text-blue-400 mr-2">•</span>
+                        {point}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="text-sm font-medium text-green-400 mb-2">Action Items</h4>
+                  <ul className="text-sm text-gray-300 space-y-1">
+                    {mockSummary.actionItems.slice(0, 2).map((item, index) => (
+                      <li key={index} className="flex items-start">
+                        <span className="text-green-400 mr-2">•</span>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </Card>
+
+            {/* Sentiment Analysis */}
+            <Card className="bg-orange/5 backdrop-blur-sm border-white/10 p-6">
+              <h3 className="text-lg font-semibold mb-4 flex items-center text-white">
                 <Heart className="mr-2" size={20} />
                 Sentiment Analysis
               </h3>
@@ -464,39 +545,39 @@ function LiveDashboard({ onBack }: { onBack: () => void }) {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     <Smile className="text-green-400" size={16} />
-                    <span>Positive</span>
+                    <span className="text-yellow-400">Positive</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <div className="w-20 h-2 bg-gray-700 rounded-full">
-                      <div className="h-full w-3/5 bg-green-400 rounded-full"></div>
+                      <div className="h-full w-4/5 bg-green-400 rounded-full"></div>
                     </div>
-                    <span className="text-sm text-gray-400">60%</span>
+                    <span className="text-sm text-gray-400">75%</span>
                   </div>
                 </div>
 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     <Meh className="text-yellow-400" size={16} />
-                    <span>Neutral</span>
+                    <span className="text-yellow-400">Neutral</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <div className="w-20 h-2 bg-gray-700 rounded-full">
-                      <div className="h-full w-1/3 bg-yellow-400 rounded-full"></div>
+                      <div className="h-full w-1/5 bg-yellow-400 rounded-full"></div>
                     </div>
-                    <span className="text-sm text-gray-400">30%</span>
+                    <span className="text-sm text-gray-400">20%</span>
                   </div>
                 </div>
 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     <Frown className="text-red-400" size={16} />
-                    <span>Negative</span>
+                    <span className="text-yellow-400">Negative</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <div className="w-20 h-2 bg-gray-700 rounded-full">
-                      <div className="h-full w-1/5 bg-red-400 rounded-full"></div>
+                      <div className="h-full w-1/20 bg-red-400 rounded-full"></div>
                     </div>
-                    <span className="text-sm text-gray-400">10%</span>
+                    <span className="text-sm text-gray-400">5%</span>
                   </div>
                 </div>
               </div>
@@ -540,6 +621,11 @@ function RecordDashboard({ onBack }: { onBack: () => void }) {
     return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`
   }
 
+  const handleAnalyzeAudio = () => {
+    // Navigate to analysis dashboard with recorded audio
+    onBack() // This will be modified to show analysis dashboard
+  }
+
   return (
     <div className="min-h-screen bg-black text-white p-4">
       <div className="max-w-4xl mx-auto">
@@ -581,11 +667,18 @@ function RecordDashboard({ onBack }: { onBack: () => void }) {
 
               {hasRecording && (
                 <div className="flex space-x-4">
-                  <Button variant="outline" className="border-white/20 text-white hover:bg-white/10 bg-transparent">
-                    <Play className="mr-2" size={16} />
-                    Play Recording
+                  <Button
+                    variant="outline"
+                    className="border-white/20 text-white hover:bg-white/10 bg-transparent"
+                    onClick={toggleRecording}
+                  >
+                    <Mic className="mr-2" size={16} />
+                    Record Again
                   </Button>
-                  <Button className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700">
+                  <Button
+                    className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700"
+                    onClick={() => onBack()} // This will trigger analysis dashboard
+                  >
                     Analyze Audio
                   </Button>
                 </div>
@@ -678,11 +771,14 @@ function UploadDashboard({ onBack }: { onBack: () => void }) {
                   <Button
                     variant="outline"
                     onClick={() => setUploadedFile(null)}
-                    className="border-white/20 text-white hover:bg-white/10"
+                    className="border-white/20 text-white hover:bg-white/10 bg-transparent"
                   >
                     Choose Different File
                   </Button>
-                  <Button className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700">
+                  <Button
+                    className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700"
+                    onClick={() => onBack()} // This will trigger analysis dashboard
+                  >
                     Analyze Audio
                   </Button>
                 </div>
@@ -695,22 +791,337 @@ function UploadDashboard({ onBack }: { onBack: () => void }) {
   )
 }
 
+// Analysis Dashboard Component (for recorded/uploaded audio)
+function AnalysisDashboard({
+  onBack,
+  audioType,
+}: {
+  onBack: () => void
+  audioType: "recorded" | "uploaded"
+}) {
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [currentTime, setCurrentTime] = useState(45) // Mock current time
+  const [duration] = useState(165) // Mock duration (2:45)
+  const [targetLanguage, setTargetLanguage] = useState("hi")
+  const [showTranslation, setShowTranslation] = useState(false)
+
+  const togglePlayback = () => {
+    setIsPlaying(!isPlaying)
+    // In real implementation, this would control actual audio playback
+  }
+
+  const handleSeek = (time: number) => {
+    setCurrentTime(time)
+    // In real implementation, this would seek the audio
+  }
+
+  const translateText = (text: string, fromLang: string) => {
+    // Mock translation - same as live dashboard
+    const translations: { [key: string]: { [key: string]: string } } = {
+      "Hello everyone, welcome to today's meeting. I'm excited to discuss our quarterly progress and the new initiatives we've been working on.":
+        {
+          hi: "नमस्ते सभी, आज की बैठक में आपका स्वागत है। मैं हमारी तिमाही प्रगति और नई पहलों पर चर्चा करने के लिए उत्साहित हूं।",
+          es: "Hola a todos, bienvenidos a la reunión de hoy. Estoy emocionado de discutir nuestro progreso trimestral y las nuevas iniciativas.",
+          ja: "皆さん、こんにちは。今日の会議へようこそ。四半期の進捗と新しい取り組みについて話し合うことを楽しみにしています。",
+          ko: "안녕하세요 여러분, 오늘 회의에 오신 것을 환영합니다. 분기별 진행 상황과 새로운 이니셔티브에 대해 논의하게 되어 기쁩니다.",
+          te: "అందరికీ నమస్కారం, నేటి సమావేశానికి స్వాగతం. మా త్రైమాసిక పురోగతి మరియు కొత్త కార్యక్రమాలను చర్చించడానికి నేను ఉత్సాహంగా ఉన్నాను.",
+        },
+    }
+
+    return (
+      translations[text]?.[targetLanguage] ||
+      `[Translated to ${languages.find((l) => l.code === targetLanguage)?.name}]: ${text}`
+    )
+  }
+
+  return (
+    <div className="min-h-screen bg-black text-white p-4">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="flex justify-between items-center mb-8">
+          <button onClick={onBack} className="flex items-center text-blue-400 hover:text-blue-300">
+            <ArrowLeft className="mr-2" size={20} />
+            Back to Options
+          </button>
+          <h1 className="text-2xl font-bold">{audioType === "recorded" ? "Recorded" : "Uploaded"} Audio Analysis</h1>
+          <div className="flex items-center space-x-4">
+            <Select value={targetLanguage} onValueChange={setTargetLanguage}>
+              <SelectTrigger className="w-40 bg-white/10 border-white/20">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="bg-gray-900 border-white/20">
+                {languages.map((lang) => (
+                  <SelectItem key={lang.code} value={lang.code}>
+                    {lang.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Button
+              onClick={() => setShowTranslation(!showTranslation)}
+              className={`${
+                showTranslation
+                  ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                  : "bg-white/10 hover:bg-white/20 border border-white/20"
+              }`}
+            >
+              <Languages className="mr-2" size={16} />
+              Translate
+            </Button>
+          </div>
+        </div>
+
+        <div className="grid lg:grid-cols-4 gap-6">
+          {/* Left Panel - Audio Player */}
+          <div className="lg:col-span-1">
+            <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-6 h-fit">
+              <h3 className="text-xl font-semibold mb-6 text-center">Audio Player</h3>
+
+              <div className="flex flex-col items-center space-y-6">
+                <div className="w-32 h-32 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
+                  <FileAudio size={48} className="text-white" />
+                </div>
+
+                <AudioProgressBar currentTime={currentTime} duration={duration} onSeek={handleSeek} />
+
+                <div className="flex items-center space-x-4">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="border-white/20 text-white hover:bg-white/10 bg-transparent"
+                  >
+                    <SkipBack size={16} />
+                  </Button>
+                  <Button
+                    onClick={togglePlayback}
+                    size="lg"
+                    className="w-16 h-16 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                  >
+                    {isPlaying ? <Pause size={24} /> : <Play size={24} />}
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="border-white/20 text-white hover:bg-white/10 bg-transparent"
+                  >
+                    <SkipForward size={16} />
+                  </Button>
+                </div>
+
+                {/* Audio Info */}
+                <div className="text-center text-sm text-gray-400">
+                  <p>{audioType === "recorded" ? "Recorded Audio" : "meeting_audio.mp3"}</p>
+                  <p>
+                    Duration: {Math.floor(duration / 60)}:{(duration % 60).toString().padStart(2, "0")}
+                  </p>
+                </div>
+              </div>
+            </Card>
+
+            {/* Speaker Stats */}
+            <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-6 mt-6">
+              <h3 className="text-lg font-semibold mb-4 flex items-center">
+                <Users className="mr-2" size={20} />
+                Speaker Statistics
+              </h3>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-blue-400">John Smith</span>
+                  <span className="text-sm text-gray-400">65% talk time</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-purple-400">Maria Garcia</span>
+                  <span className="text-sm text-gray-400">35% talk time</span>
+                </div>
+              </div>
+            </Card>
+          </div>
+
+          {/* Center Panel - Transcript */}
+          <div className="lg:col-span-1">
+            <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-6 h-[600px] flex flex-col">
+              <h3 className="text-xl font-semibold mb-4">Transcript</h3>
+
+              <div className="flex-1 overflow-y-auto space-y-4">
+                {mockTranscript.map((entry, index) => (
+                  <div key={index} className="p-3 bg-white/5 rounded-lg border-l-4 border-blue-500">
+                    <div className="flex justify-between items-start mb-2">
+                      <div className="flex items-center space-x-2">
+                        <span className="font-medium text-blue-400">{entry.speaker}</span>
+                        <span className="text-xs text-gray-500 uppercase">{entry.language}</span>
+                        <SentimentIcon sentiment={entry.sentiment} />
+                      </div>
+                      <span className="text-xs text-gray-500">{entry.timestamp}</span>
+                    </div>
+                    <p className="text-gray-300 text-sm">{entry.text}</p>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          </div>
+
+          {/* Right Panel - Translation & Analysis */}
+          <div className="lg:col-span-2 space-y-6">
+            {showTranslation && (
+              <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-6 h-[280px] flex flex-col">
+                <h3 className="text-xl font-semibold mb-4 flex items-center">
+                  <Languages className="mr-2" size={20} />
+                  Translation ({languages.find((l) => l.code === targetLanguage)?.name})
+                </h3>
+
+                <div className="flex-1 overflow-y-auto space-y-4">
+                  {mockTranscript.map((entry, index) => (
+                    <div key={index} className="p-3 bg-white/5 rounded-lg border-l-4 border-purple-500">
+                      <div className="flex justify-between items-start mb-2">
+                        <span className="font-medium text-purple-400">{entry.speaker}</span>
+                        <span className="text-xs text-gray-500">{entry.timestamp}</span>
+                      </div>
+                      <p className="text-gray-300 text-sm">{translateText(entry.text, entry.language)}</p>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+            )}
+
+            {/* Summarization */}
+            <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-6">
+              <h3 className="text-lg font-semibold mb-4 flex items-center">
+                <FileText className="mr-2" size={20} />
+                Audio Summary
+              </h3>
+              <div className="space-y-4">
+                <div>
+                  <h4 className="text-sm font-medium text-blue-400 mb-2">Key Points</h4>
+                  <ul className="text-sm text-gray-300 space-y-1">
+                    {mockSummary.keyPoints.map((point, index) => (
+                      <li key={index} className="flex items-start">
+                        <span className="text-blue-400 mr-2">•</span>
+                        {point}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="text-sm font-medium text-green-400 mb-2">Action Items</h4>
+                  <ul className="text-sm text-gray-300 space-y-1">
+                    {mockSummary.actionItems.map((item, index) => (
+                      <li key={index} className="flex items-start">
+                        <span className="text-green-400 mr-2">•</span>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="flex justify-between text-sm text-gray-400 pt-2 border-t border-white/10">
+                  <span>Duration: {mockSummary.duration}</span>
+                  <span>Words: {mockSummary.wordCount}</span>
+                </div>
+              </div>
+            </Card>
+
+            {/* Sentiment Analysis */}
+            <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-6">
+              <h3 className="text-lg font-semibold mb-4 flex items-center">
+                <Heart className="mr-2" size={20} />
+                Sentiment Analysis
+              </h3>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <Smile className="text-green-400" size={16} />
+                    <span className="text-yellow-400">Positive</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <div className="w-20 h-2 bg-gray-700 rounded-full">
+                      <div className="h-full w-4/5 bg-green-400 rounded-full"></div>
+                    </div>
+                    <span className="text-sm text-gray-400">75%</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <Meh className="text-yellow-400" size={16} />
+                    <span className="text-yellow-400">Neutral</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <div className="w-20 h-2 bg-gray-700 rounded-full">
+                      <div className="h-full w-1/5 bg-yellow-400 rounded-full"></div>
+                    </div>
+                    <span className="text-sm text-gray-400">20%</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <Frown className="text-red-400" size={16} />
+                    <span className="text-yellow-400">Negative</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <div className="w-20 h-2 bg-gray-700 rounded-full">
+                      <div className="h-full w-1/20 bg-red-400 rounded-full"></div>
+                    </div>
+                    <span className="text-sm text-gray-400">5%</span>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // Main Demo Page Component
 export default function DemoPage() {
   const [selectedOption, setSelectedOption] = useState<string | null>(null)
+  const [showAnalysis, setShowAnalysis] = useState<{ show: boolean; type: "recorded" | "uploaded" | null }>({
+    show: false,
+    type: null,
+  })
+
+  const handleSelectOption = (option: string) => {
+    if (option === "record" || option === "upload") {
+      // For record and upload, we'll show analysis after they complete the action
+      setSelectedOption(option)
+    } else {
+      setSelectedOption(option)
+    }
+  }
+
+  const handleBackFromRecordUpload = () => {
+    // When coming back from record/upload, show analysis dashboard
+    if (selectedOption === "record") {
+      setShowAnalysis({ show: true, type: "recorded" })
+    } else if (selectedOption === "upload") {
+      setShowAnalysis({ show: true, type: "uploaded" })
+    }
+    setSelectedOption(null)
+  }
+
+  const handleBackFromAnalysis = () => {
+    setShowAnalysis({ show: false, type: null })
+    setSelectedOption(null)
+  }
 
   const renderDashboard = () => {
+    if (showAnalysis.show && showAnalysis.type) {
+      return <AnalysisDashboard onBack={handleBackFromAnalysis} audioType={showAnalysis.type} />
+    }
+
     switch (selectedOption) {
       case "live":
         return <LiveDashboard onBack={() => setSelectedOption(null)} />
       case "record":
-        return <RecordDashboard onBack={() => setSelectedOption(null)} />
+        return <RecordDashboard onBack={handleBackFromRecordUpload} />
       case "upload":
-        return <UploadDashboard onBack={() => setSelectedOption(null)} />
+        return <UploadDashboard onBack={handleBackFromRecordUpload} />
       default:
-        return <DemoOptions onSelectOption={setSelectedOption} />
+        return <DemoOptions onSelectOption={handleSelectOption} />
     }
   }
 
   return <AnimatePresence mode="wait">{renderDashboard()}</AnimatePresence>
 }
+ 
