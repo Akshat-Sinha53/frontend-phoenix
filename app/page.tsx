@@ -55,6 +55,8 @@ function AnimatedWaveform() {
   )
 }
 
+
+
 // Navigation Component
 function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
@@ -376,7 +378,7 @@ function FeaturesSection() {
     {
       icon: Globe,
       title: "Language-Agnostic",
-      description: "Supports 100+ languages with automatic detection",
+      description: "Supports 6 languages with automatic detection",
     },
     {
       icon: Shield,
@@ -391,7 +393,7 @@ function FeaturesSection() {
     {
       icon: Users,
       title: "Speaker Identification",
-      description: "Distinguish between multiple speakers automatically",
+      description: "Distinguish between speakers automatically from the database",
     },
     {
       icon: MessageSquare,
@@ -401,7 +403,7 @@ function FeaturesSection() {
     {
       icon: Cpu,
       title: "AI-Powered",
-      description: "State-of-the-art neural networks for maximum accuracy",
+      description: "State-of-the-art models (vosk) for maximum accuracy and hassle free building ",
     },
   ]
 
@@ -489,7 +491,7 @@ function TeamSection() {
         >
           <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6">Meet Our Team</h2>
           <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-            A Squad of passionate upcoming Engineers who are looking for methods to change the world by making innovative tech scalable
+            A Squad of passionate upcoming Engineers who are looking for methods to change the world by making innovative tech scalable and we are trying to win House Of Turing Hackathon.
           </p>
         </motion.div>
 
@@ -549,8 +551,8 @@ function Footer() {
               <Github size={24} />
             </Link>
             <Link
-              href="https://linkedin.com"
-              className="text-gray-400 hover:text-white transition-colors"
+              href="https://www.linkedin.com/in/siddharth-paul-00ab59278/"
+              className="text-gray-400 hover:text-blue-400 transition-colors"
               target="_blank"
               rel="noopener noreferrer"
             >
